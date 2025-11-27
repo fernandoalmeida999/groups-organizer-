@@ -6,11 +6,10 @@ import GroupsPage from "./pages/groupspage";
 import NotFound from "./pages/notfound";
 import Navbar from "./components/navbar";
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Navbar />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/students" element={<StudentsPage />} />
@@ -20,5 +19,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;
