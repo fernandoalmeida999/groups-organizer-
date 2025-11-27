@@ -1,15 +1,17 @@
-import userModel  from "../models/userModel";
+import db from "../config/db.js";
 
-export const getUsers = async (req, res) => {
-    const db = req.db;
-    const users = await userModel.getAll(db);
-    res.json(users);
-};
+// GET all users
+export function getUsers(req, res) {
+  const users = db.prepare("SELECT * FROM users").all();
+  res.json(users);
+}
 
-export const createUser = async (req, res) => {
-    const db = req.db;
-    const {name, email} = req.body;
+// CREATE user
+export function createUser(req, res) {
+  const { name } = req.body;
 
-    await userModel.create (db, {name, email});
-    res.json({message: "User created successfully"});
+  const stmt = db.prepare("INSERT INTO users (name) VALUES (?)");
+  const info = stmt.run(name);
+
+  res.json({ id: info.lastInsertRowid, name });
 }

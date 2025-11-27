@@ -1,17 +1,15 @@
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
-import path from 'path';
+import Database from "better-sqlite3";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const dbPath = path.resolve("backden/database/database.sqlite");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const initDb = async () => {
-  const db = await open({
-    filename: dbPath,
-    driver: sqlite3.Database
-  });
+const dbPath = path.join(__dirname, "../database/database.sqlite");
 
-  console.log ("swlite database connected :" ,dbPath);
-  return db;
-};
+// Abre/cria a base de dados
+const db = new Database(dbPath);
 
-export default initDb;
+console.log("📦 SQLite ligado via better-sqlite3:", dbPath);
+
+export default db;

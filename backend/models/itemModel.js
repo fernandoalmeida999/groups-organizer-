@@ -1,16 +1,34 @@
-export default {
-    async getAll(db) {
-        return db.all("select * from items");
-    },
+import db from "../config/db.js";
 
-    async getByID(db, id){
-        return db.get("select * from items where id = ?", [id]);
-    },
+const ItemModel = {
+  getAll() {
+    return db.prepare("SELECT * FROM items").all();
+  },
 
-    async create(db, {title, description, user_id}){
-        return db.run(
-            "insert into items (title, description, user_id) values (?, ?, ?)",
-            [title, description, user_id]
-        );
-    }
+  getById(id) {
+    return db.prepare("SELECT * FROM items WHERE id = ?").get(id);
+  },
+
+  create({ name, description }) {
+    const stmt = db.prepare(
+      "INSERT INTO items (name, description) VALUES (?, ?)"
+    );
+    const result = stmt.run(name, description);
+    return { id: result.lastInsertRowid, name, description };
+  },
+
+  update(id, { name, description }) {
+    const stmt = db.prepare(
+      "UPDATE items SET name = ?, description = ? WHERE id = ?"
+    );
+    stmt.run(name, description, id);
+    return this.getById(id);
+  },
+
+  delete(id) {
+    const stmt = db.prepare("DELETE FROM items WHERE id = ?");
+    return stmt.run(id);
+  },
 };
+
+export default ItemModel;
