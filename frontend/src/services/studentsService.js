@@ -13,8 +13,8 @@ export async function getAll() {
     // fallback mock se API não estiver a correr
     console.warn("studentsService.getAll fallback mock:", err.message);
     return [
-      { id: 1, name: "Alice Silva", course: "Matemática" },
-      { id: 2, name: "Bruno Costa", course: "Informática" },
+      { id: 1, name: "Fernando Almeida", course: "DS" },
+      { id: 2, name: "Pedro Correia", course: "DS"},
     ];
   }
 }
